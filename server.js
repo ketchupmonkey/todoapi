@@ -42,19 +42,17 @@ app.get('/todos/:id',function(req,res){
 //POST /todos
 
 app.post('/todos',function(req,res){
-  var body = req.body;
+  var body =_.pick(req.body,'completed', 'description');
 
   if (!_.isBoolean(body.completed) || !_.isString(body.description) || body.description.trim().length === 0){
     return res.status(400).send();
   }
-  // add id field
-  //push body into array
+
+  body.description=body.description.trim();
+  // set body.description to trimmed value
   body.id=todoNextId;
   todoNextId ++;
-  //console.log('description: ' + body.description);
   todos.push(body);
-  //console.log(todos);
-  //console.log(todoNextId);
   res.json(body);
 });
 
